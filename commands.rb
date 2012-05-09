@@ -73,17 +73,22 @@ def equip (player = $player)
 		invtry << item.name if (item.class == Weapon) || (item.class == Armour)
 	end
 	puts ''
-	puts "Weapon: #{player.weapon[0].name.capitalize}" unless player.weapon.length == 0
-	puts "Weapon: empty" if player.weapon.length == 0
-	player.armour.each do |article|
-		puts "#{(article.type).capitalize}: #{article.name.capitalize}"
-	end
 	puts ''
 	puts 'what would you like to equip?'
+	puts "('done' to return)"
 	puts ''
 	puts invtry
 	response = ''
 	while true
+		puts 'Current Equipment:'.center(10)
+		puts "="*10
+		puts "Weapon: #{player.weapon[0].name.capitalize}" unless player.weapon.length == 0
+		puts "Weapon: empty" if player.weapon.length == 0
+		player.armour.each do |article|
+			puts "#{(article.type).capitalize}: #{article.name.capitalize}"
+		end
+		puts "="*10
+		puts ''
 		response = gets.chomp
 		break if response == 'done'
 		if invtry.include? response
@@ -151,6 +156,7 @@ end
 
 def move
 	puts 'move where?'
+	puts "('done' to return)"
 	response = ''
 	while true
 		response = gets.chomp
@@ -175,6 +181,7 @@ end
 
 def travel
 	puts 'Travel where?'
+	puts "('done' to return)"
 	response = ''
 	while true
 		response = gets.chomp

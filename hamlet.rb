@@ -1,4 +1,4 @@
-
+require 'timer'
 
 
 class Hamlet1
@@ -61,6 +61,7 @@ class AbandTavern
 	end
 	
 	def leave
+		timer
 		if self.inventory.length == 0 && self.visit == 0
 			puts 'As you turn to leave, you see the shadow of a figure on the door.'
 			puts 'You briefly look around thinking that perhaps someone was hiding'
@@ -70,10 +71,12 @@ class AbandTavern
 			puts 'that resembles a man. It begins to speak, though the voice is hollow'
 			puts 'and quiet. It warns you of a power that seeks retribution for your'
 			puts 'past actions. Before you are able to ask it what it means, it attacks.'
+			timer
 			fight(Ghoul.new('Restless Spirit'))
 		end
 		
 		if self.inventory.length == 0 && $player.life > 0 && self.visit == 0
+			timer
 			puts 'The ethereal substance of the spirit dissolves in a burst of light. You'
 			puts 'shield your eyes. When you look back, you see only dust in the air and'
 			puts 'your shadow against the wall. You wonder what the spirit had meant and'
@@ -83,6 +86,7 @@ class AbandTavern
 			puts 'you there or not, you are certain that Middleton will have more to offer'
 			puts 'you than this place. You open the door and leave.'
 			puts ''
+			timer
 			self.visit += 1
 		end
 		$player.position.delete_at (0)
@@ -99,7 +103,7 @@ class AbandTavern
 			puts 'You see a fragment of a map hanging on the wall. You recognize the'
 			puts 'area that you are currently in, and a short distance away you see'
 			puts 'what appears to be another town. You hope that towns population is'
-			puts 'a little larger than this ones'
+			puts 'a little larger than this ones. (take: map)'
 		end
 		puts 'there seems to be nothing of interest here' if self.inventory.length == 0
 	end

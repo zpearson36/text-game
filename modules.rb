@@ -28,6 +28,7 @@ module Shop
 		inventory = [self.weapons, self.items, self.spells, self.armour]
 		puts "You have #{$player.gold} gold"
 		puts 'What would you like to purchase?'
+		puts "('back' to return to shop)"
 		puts ''
 		puts '-'*10
 		puts 'items'.center(10)
@@ -110,6 +111,8 @@ module Shop
 	def sell
 		puts ''
 		puts 'what would you like to sell?'
+		puts "('back' to return to shop)"
+		puts''
 		sell = ''
 		while true
 			puts inventory
@@ -146,7 +149,7 @@ module Shop
 							$player.inventory.each do |item|
 								(temp << item) if (item == Armour_id[sell])
 							end
-							$player.weapon.delete_at 0 if temp.length == 0
+							$player.armour.delete_at $player.armour.index(item).to_i if temp.length == 0
 						end
 						loop += 1
 						break

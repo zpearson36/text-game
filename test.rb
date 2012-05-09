@@ -72,7 +72,36 @@ while true
 		puts ''
 		puts 'Please enter a name for your character.'
 		name = gets.chomp
-		$player = Player.new(name,5,5,5,5)
+		
+		def attribute_total(stats)
+			stats[:strength] + stats[:endurance] + stats[:agility] + stats[:intelligence]
+		end
+
+		player_attribute = {:strength => 0, :endurance => 0, :agility => 0, :intelligence => 0}
+		until attribute_total(player_attribute) == 20
+			puts ''
+			puts 'you have 20 points to distribute between strength, agility, intelligence'
+			puts 'and endurance'
+			puts ''
+			player_attribute.each do |attribute, value|
+				while true
+					puts ''
+					puts 'please enter a value for ' + attribute.to_s
+					puts ''
+					stat = gets.to_i
+					if (stat > 0 && stat <= 17)
+						player_attribute[attribute] = stat
+						break
+					end
+					puts 'please enter a number between 1 and 17' if (stat <= 0 || stat > 17)
+				end
+			end
+			puts 'You only have 20 points to distribute!!!' if attribute_total(player_attribute) > 20
+			puts 'Please distribute all of the points.' if attribute_total(player_attribute) < 20
+		end
+		
+		$player = Player.new(name,player_attribute[:strength], player_attribute[:endurance], player_attribute[:agility], player_attribute[:intelligence])
+		
 		$player.maps << Hamletmap
 		$player.area << Hamlet
 		$player.visited << Hamletloc
@@ -126,7 +155,7 @@ while true
 		puts ''
 		k = gets.chomp
 		puts''
-		break if k == 'done'
+		break if k == 'exit'
 		if ($player.position.length > 0) && (position.commands.include? k)
 			$player.position[0].send(k)
 		elsif ($player.position.length == 0) && (Commands_outside.include? k)
@@ -135,54 +164,53 @@ while true
 			puts 'please enter a valid command'
 		end
 	end
-
-	puts 'You Are Dead!!!!!!!' if $player.life <= 0
-	puts ''
-	puts 'would you like to continue?'
-	j = ''
-	while true
-		j = gets.chomp
-		if j.downcase == 'yes'
-		puts "Which character would you like to load?"
-		name = gets.chomp
-		File.open("games/#{name}/#{name}") do |file|
-			$player = Marshal.load(file)
-		end
-
-		$player.party.each do |char|
-			File.open("games/#{$player.name}/#{char.name}") do |file|
-				char = Marshal.load(file)
-			end
-		end		
-
-		$player.party.each do |char|
-			File.open("games/#{$player.name}/#{char.name}", "w+") do |file|
-				Marshal.dump(char, file)
-			end
-		end	
-
-		$player.maps.each do |area|
-			File.open("games/#{$player.name}/#{area.name}") do |file|
-				area = Marshal.load(file)
-			end
-		end
-		
-		$player.visited.each do |location|
-			location.each do |place|
-				File.open("games/#{$player.name}/#{place.name}") do |file|
-					place = Marshal.load(file)
+	break if $player.life > 0
+	if $player.life <= 0
+		puts 'You Are Dead!!!!!!!'
+		puts ''
+		puts 'would you like to continue?'
+		j = ''
+		while true
+			j = gets.chomp
+			if j.downcase == 'yes'
+				File.open("games/#{$player.name}/#{$player.name}") do |file|
+					$player = Marshal.load(file)
 				end
+
+				$player.party.each do |char|
+					File.open("games/#{$player.name}/#{char.name}") do |file|
+						char = Marshal.load(file)
+					end
+				end		
+
+				$player.party.each do |char|
+					File.open("games/#{$player.name}/#{char.name}", "w+") do |file|
+						Marshal.dump(char, file)
+					end
+				end	
+
+				$player.maps.each do |area|
+					File.open("games/#{$player.name}/#{area.name}") do |file|
+						area = Marshal.load(file)
+					end
+				end
+				
+				$player.visited.each do |location|
+					location.each do |place|
+						File.open("games/#{$player.name}/#{place.name}") do |file|
+							place = Marshal.load(file)
+						end
+					end
+				end
+				puts "You awake in the #{$player.position[0].name}" unless $player.position.length == 0
+				puts ''
+				puts $player.position[0].look unless $player.position.length == 0
+				break
+				elsif j.downcase == 'no'
+					break
+				else
+				puts 'I do not know that command'
 			end
-		end
-			puts "You awake in the #{$player.position[0].name}" unless $player.position.length == 0
-			puts ''
-			puts $player.position[0].look unless $player.position.length == 0
-			break
-		elsif j.downcase == 'no'
-			$player.life = 0
-			break
-		else
-			puts 'I do not know that command'
 		end
 	end
 	break if $player.life <= 0

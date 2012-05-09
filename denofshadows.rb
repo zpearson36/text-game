@@ -1,4 +1,5 @@
 require 'items'
+require 'timer'
 class DenoShadow
 	attr_accessor :name, :locations, :visit, :fightchance, :monsters
 	
@@ -50,6 +51,7 @@ class Den_north
 	
 	def introduction
 		if self.inventory.include?('book of mysteries')
+			timer
 			puts 'As you walk into the cavern, you see a what looks to be a thin man'
 			puts 'huddled in the corner. He is skinny to the point of starvation.'
 			puts 'As you look, you begin to notice that certain characteristics are'
@@ -69,6 +71,7 @@ class Den_north
 			puts "laugh. He stands up straight and begins to speak. 'You have yet to"
 			puts "remember, but I shall see to it that you do not have get the chance"
 			puts "to.' His smile turns to a scowl and he attacks."
+			timer
 			fight(Demon.new('Belial', 150, 5, 40))
 			puts ''
 			puts 'The creatures body drops to the floor. He now lay in a pool of his own'
