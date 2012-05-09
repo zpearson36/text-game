@@ -1,0 +1,25 @@
+To use this, run test.rb
+
+commands (general overview - additional commands may be given in prompt)
+
+(when outside):
+
+look
+move
+travel
+inventory
+stats
+use
+
+(when "inside"):
+
+look
+leave
+take
+
+(when in a fight):
+
+hit
+cast
+use
+inventory
