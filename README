@@ -2,6 +2,8 @@ To use this, run test.rb
 
 commands (general overview - additional commands may be given in prompt)
 
+typing 'exit' closes game when not in combat
+
 For all commands that require specification (using items, moving places, etc)
 type the command first, return, and then type the specification.
 
